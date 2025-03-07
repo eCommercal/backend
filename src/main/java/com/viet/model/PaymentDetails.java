@@ -15,5 +15,5 @@ public class PaymentDetails {
     String code;
     String message;
     String payment_url;
-    String paymentStatus;
+    String status;
 }
