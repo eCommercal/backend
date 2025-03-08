@@ -3,9 +3,11 @@ package com.viet.service;
 import com.viet.config.JwtProvider;
 import com.viet.domain.USER_ROLE;
 import com.viet.model.Cart;
+import com.viet.model.Seller;
 import com.viet.model.User;
 import com.viet.model.VerificationCode;
 import com.viet.repository.CartRepository;
+import com.viet.repository.SellerRepository;
 import com.viet.repository.UserRepository;
 import com.viet.repository.VerificationCodeRepository;
 import com.viet.request.LoginRequest;
@@ -19,7 +21,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
     VerificationCodeRepository verificationCodeRepository;
     EmailService emailService;
     CustomUserServiceImpl customUserService;
+    SellerRepository sellerRepository;
 
     @Override
     public String createUser(SignupRequest req) throws Exception {
@@ -79,16 +81,27 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendOtp(String email) throws Exception {
-        String SIGNING_PREFIX = "signin_";
+    public void sendOtp(String email, USER_ROLE role) throws Exception {
+
+        String SIGNING_PREFIX = "signing_";
 
         if(email.startsWith(SIGNING_PREFIX)) {
             email = email.substring(SIGNING_PREFIX.length());
 
-            User user = userRepository.findByEmail(email);
-            if(user == null) {
-                throw new Exception("user not found with this email!");
+            if(role.equals(USER_ROLE.ROLE_SELLER)) {
+                Seller seller = sellerRepository.findByEmail(email);
+                if(seller == null) {
+                    throw new Exception("seller not found with this email!" + email);
+                }
+
+            } else {
+                User user = userRepository.findByEmail(email);
+                if(user == null) {
+                    throw new Exception("user not found with this email!");
+                }
             }
+
+
         }
 
         VerificationCode isExist = verificationCodeRepository.findByEmail(email);
@@ -134,6 +147,13 @@ public class AuthServiceImpl implements AuthService {
 
     private Authentication authenticate(String username, String otp) {
         UserDetails userDetails = customUserService.loadUserByUsername(username);
+
+        // bo di phan seller truoc email thi moi dang nhap duoc
+
+        String SELLER_PREFIX = "seller_";
+        if(username.startsWith(SELLER_PREFIX)) {
+            username = username.substring(SELLER_PREFIX.length());
+        }
 
         if(userDetails == null) {
             throw new BadCredentialsException("username or password is incorrect");

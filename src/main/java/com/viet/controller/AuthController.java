@@ -4,6 +4,7 @@ import com.viet.domain.USER_ROLE;
 import com.viet.model.User;
 import com.viet.model.VerificationCode;
 import com.viet.repository.UserRepository;
+import com.viet.request.LoginOtpRequest;
 import com.viet.request.LoginRequest;
 import com.viet.request.SignupRequest;
 import com.viet.response.ApiResponse;
@@ -50,15 +51,15 @@ public class AuthController {
     }
 
     @PostMapping("/send-otp")
-    public ResponseEntity<ApiResponse> sendOtp(@RequestBody VerificationCode req) throws Exception {
+    public ResponseEntity<ApiResponse> sendOtp(@RequestBody LoginOtpRequest req) throws Exception {
 
-        authService.sendOtp(req.getEmail());
+        authService.sendOtp(req.getEmail(), req.getRole());
 
         ApiResponse res = new ApiResponse();
 
         res.setMessage("otp sent success");
 
 
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }
