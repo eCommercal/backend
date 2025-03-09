@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "cart")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartItem {
     @Id

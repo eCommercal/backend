@@ -164,6 +164,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductBySellerId(Long sellerId) {
-        return List.of();
+        return productRepository.findBySellerId(sellerId);
     }
 }
