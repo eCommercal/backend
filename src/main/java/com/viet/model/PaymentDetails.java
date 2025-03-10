@@ -1,5 +1,6 @@
 package com.viet.model;
 
+import com.viet.domain.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +16,5 @@ public class PaymentDetails {
     String code;
     String message;
     String payment_url;
-    String status;
+    PaymentStatus status;
 }
