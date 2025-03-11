@@ -3,12 +3,14 @@ package com.viet.controller;
 import com.viet.config.JwtProvider;
 import com.viet.domain.AccountStatus;
 import com.viet.model.Seller;
+import com.viet.model.SellerReport;
 import com.viet.model.VerificationCode;
 import com.viet.repository.VerificationCodeRepository;
 import com.viet.request.LoginRequest;
 import com.viet.response.AuthResponse;
 import com.viet.service.AuthService;
 import com.viet.service.EmailService;
+import com.viet.service.SellerReportService;
 import com.viet.service.SellerService;
 import com.viet.utils.OtpUtil;
 import lombok.AccessLevel;
@@ -31,7 +33,7 @@ public class SellerController {
     AuthService authService;
     EmailService emailService;
     JwtProvider jwtProvider;
-
+    SellerReportService sellerReportService;
 
 
     @PostMapping("/login")
@@ -98,11 +100,18 @@ public class SellerController {
 
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }
-//
-//    @GetMapping("/report")
-//    public ResponseEntity<SellerReport> getSellerReport(@RequestHeader("Authorization") String jwt) throws Exception {
-//
-//    }
+
+    @GetMapping("/report")
+    public ResponseEntity<SellerReport> getSellerReport(@RequestHeader("Authorization") String jwt) throws Exception {
+
+//        String email = jwtProvider.getEmailFromJwtToken(jwt);
+//        Seller seller = sellerService.getSellerByEmail(email);
+        Seller seller = sellerService.getSellerProfile(jwt);
+        SellerReport sellerReport = sellerReportService.getSellerReport(seller);
+
+        return new ResponseEntity<>(sellerReport, HttpStatus.OK);
+
+    }
 
     @GetMapping
     public ResponseEntity<List<Seller>> getSellerList(@RequestParam(required = false)AccountStatus status) throws Exception {

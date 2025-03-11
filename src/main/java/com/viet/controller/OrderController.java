@@ -2,11 +2,9 @@ package com.viet.controller;
 
 import com.viet.domain.PaymentMethod;
 import com.viet.model.*;
+import com.viet.repository.PaymentOrderRepository;
 import com.viet.response.PaymentResponse;
-import com.viet.service.CartService;
-import com.viet.service.OrderService;
-import com.viet.service.SellerService;
-import com.viet.service.UserService;
+import com.viet.service.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +26,9 @@ public class OrderController {
     UserService userService;
     CartService cartService;
     SellerService sellerService;
+    SellerReportService sellerReportService;
+    PaymentService paymentService;
+    PaymentOrderRepository paymentOrderRepository;
 
 
 
@@ -41,7 +42,13 @@ public class OrderController {
 
         Set<Order> orders = orderService.createOrder(user, shippingAddress, cart);
 
+        PaymentOrder paymentOrder = paymentService.createOrder(user, orders);
+
         PaymentResponse paymentResponse = new PaymentResponse();
+
+        String paymentUrl = paymentService.createPaymentLink(user, paymentOrder.getAmount(), paymentOrder.getId());
+        paymentResponse.setPaymentUrl(paymentUrl);
+
 
         return new ResponseEntity<>(paymentResponse, HttpStatus.CREATED);
 
@@ -84,7 +91,11 @@ public class OrderController {
 
         Order order = orderService.cancelOrder(orderId, user);
 
-//        Seller seller = sellerService.getSellerById(order.getSellerId());
+        Seller seller = sellerService.getSellerById(order.getSellerId());
+        SellerReport sellerReport = sellerReportService.getSellerReport(seller);
+
+        sellerReport.setCancelOrders(sellerReport.getCancelOrders() + 1);
+        sellerReport.setTotalRefunds(sellerReport.getTotalRefunds() + order.getTotalSellingPrice());
 
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
