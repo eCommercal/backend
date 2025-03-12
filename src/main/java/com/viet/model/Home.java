@@ -13,4 +13,5 @@ public class Home {
     List<HomeCategory> shopByCategories;
     List<HomeCategory> electricCategories;
     List<HomeCategory> dealCategories;
+    List<Deal> deals;
 }
