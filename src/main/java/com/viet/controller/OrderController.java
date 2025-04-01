@@ -4,7 +4,8 @@ import com.viet.domain.PaymentMethod;
 import com.viet.model.*;
 import com.viet.repository.PaymentOrderRepository;
 import com.viet.response.PaymentResponse;
-import com.viet.service.*;
+import com.viet.service.Impl.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,9 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,12 +32,12 @@ public class OrderController {
     PaymentOrderRepository paymentOrderRepository;
 
 
-
     @PostMapping
     public ResponseEntity<PaymentResponse> createOrder(@RequestBody Address shippingAddress,
-                                                       @RequestParam PaymentMethod paymentMethod,
+                                                       @RequestParam String paymentMethod,
+                                                       HttpServletRequest request,
                                                        @RequestHeader("Authorization") String jwt
-                                                       ) throws Exception {
+    ) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
         Cart cart = cartService.findUserCart(user);
 
@@ -46,8 +47,18 @@ public class OrderController {
 
         PaymentResponse paymentResponse = new PaymentResponse();
 
-        String paymentUrl = paymentService.createPaymentLink(user, paymentOrder.getAmount(), paymentOrder.getId());
-        paymentResponse.setPaymentUrl(paymentUrl);
+        PaymentMethod method = PaymentMethod.valueOf(paymentMethod.toUpperCase());
+        paymentOrder.setPaymentMethod(method);
+
+
+        if (paymentMethod.equals("VNPay")) {
+            String paymentLinkId = UUID.randomUUID().toString();
+            paymentOrder.setPaymentLinkId(paymentLinkId);
+            String bankCode = "NCB";
+            String paymentUrl = paymentService.createPaymentLink(request, user, paymentOrder.getId(), paymentOrder.getAmount(),
+                    bankCode, paymentLinkId);
+            paymentResponse.setPaymentUrl(paymentUrl);
+        }
 
 
         return new ResponseEntity<>(paymentResponse, HttpStatus.CREATED);
@@ -99,7 +110,6 @@ public class OrderController {
 
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
-
 
 
 }

@@ -4,6 +4,7 @@ import com.viet.model.Deal;
 import com.viet.model.HomeCategory;
 import com.viet.repository.DealRepository;
 import com.viet.repository.HomeCategoryRepository;
+import com.viet.service.Impl.DealService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

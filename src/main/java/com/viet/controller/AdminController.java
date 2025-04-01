@@ -2,7 +2,7 @@ package com.viet.controller;
 
 import com.viet.domain.AccountStatus;
 import com.viet.model.Seller;
-import com.viet.service.SellerService;
+import com.viet.service.Impl.SellerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

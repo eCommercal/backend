@@ -2,8 +2,8 @@ package com.viet.controller;
 
 import com.viet.model.Seller;
 import com.viet.model.Transaction;
-import com.viet.service.SellerService;
-import com.viet.service.TransactionService;
+import com.viet.service.Impl.SellerService;
+import com.viet.service.Impl.TransactionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

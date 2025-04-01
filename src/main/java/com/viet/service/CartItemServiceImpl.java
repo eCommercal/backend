@@ -3,6 +3,7 @@ package com.viet.service;
 import com.viet.model.CartItem;
 import com.viet.model.User;
 import com.viet.repository.CartItemRepository;
+import com.viet.service.Impl.CartItemService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

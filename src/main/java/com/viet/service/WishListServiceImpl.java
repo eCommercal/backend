@@ -4,9 +4,11 @@ import com.viet.model.Product;
 import com.viet.model.User;
 import com.viet.model.Wishlist;
 import com.viet.repository.WishlistRepository;
+import com.viet.service.Impl.WishListService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,8 +37,12 @@ public class WishListServiceImpl implements WishListService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     public Wishlist addProductToWishlist(User user, Product product) {
         Wishlist wishlist = this.getWishlistByUserId(user);
+
+        System.out.println("User ID: " + user.getId());
+        System.out.println("Wishlist ID: " + wishlist.getId());
 
         if(wishlist.getProducts().contains(product)) {
             wishlist.getProducts().remove(product);

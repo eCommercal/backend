@@ -5,6 +5,7 @@ import com.viet.model.Review;
 import com.viet.model.User;
 import com.viet.repository.ReviewRepository;
 import com.viet.request.CreateReviewRequest;
+import com.viet.service.Impl.ReviewService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,6 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     ReviewRepository reviewRepository;
-    private final ReviewService reviewService;
 
     @Override
     public Review createReview(CreateReviewRequest req, User user, Product product) {

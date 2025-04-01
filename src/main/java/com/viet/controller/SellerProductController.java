@@ -1,12 +1,11 @@
 package com.viet.controller;
 
 import com.viet.exception.ProductException;
-import com.viet.exception.SellerException;
 import com.viet.model.Product;
 import com.viet.model.Seller;
 import com.viet.request.CreateProductRequest;
-import com.viet.service.ProductService;
-import com.viet.service.SellerService;
+import com.viet.service.Impl.ProductService;
+import com.viet.service.Impl.SellerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/sellers/products")
+@RequestMapping("/sellers/products")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class SellerProductController {

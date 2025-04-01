@@ -2,7 +2,7 @@ package com.viet.controller;
 
 import com.viet.model.Deal;
 import com.viet.response.ApiResponse;
-import com.viet.service.DealService;
+import com.viet.service.Impl.DealService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

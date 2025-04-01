@@ -7,6 +7,7 @@ import com.viet.model.Seller;
 import com.viet.repository.CategoryRepository;
 import com.viet.repository.ProductRepository;
 import com.viet.request.CreateProductRequest;
+import com.viet.service.Impl.ProductService;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import lombok.AccessLevel;
@@ -119,12 +120,13 @@ public class ProductServiceImpl implements ProductService {
             if(sizes != null && !sizes.isEmpty()){
                 predicates.add(criteriaBuilder.equal(root.get("size"), sizes));
             }
-            if(minPrice != null){
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(("sellingPrice")), minPrice));
+            if (minPrice != null && minPrice > 0) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("sellingPrice"), minPrice));
             }
-            if(maxPrice != null){
+            if (maxPrice != null && maxPrice > 0) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("sellingPrice"), maxPrice));
             }
+
 
             if(minDiscount != null){
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("discountPercentage"), minDiscount));

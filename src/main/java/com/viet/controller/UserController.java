@@ -2,7 +2,7 @@ package com.viet.controller;
 
 import com.viet.model.User;
 
-import com.viet.service.UserService;
+import com.viet.service.Impl.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +17,7 @@ public class UserController {
 
     UserService userService;
 
-    @GetMapping("/users/profile")
+    @GetMapping("/api/users/profile")
     public ResponseEntity<User> getUser(@RequestHeader("Authorization") String jwt) throws Exception {
 
         User user = userService.findUserByJwtToken(jwt);

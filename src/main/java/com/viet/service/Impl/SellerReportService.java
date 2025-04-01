@@ -1,4 +1,4 @@
-package com.viet.service;
+package com.viet.service.Impl;
 
 import com.viet.model.Seller;
 import com.viet.model.SellerReport;

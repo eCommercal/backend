@@ -1,15 +1,12 @@
 package com.viet.controller;
 
 import com.viet.domain.USER_ROLE;
-import com.viet.model.User;
-import com.viet.model.VerificationCode;
-import com.viet.repository.UserRepository;
 import com.viet.request.LoginOtpRequest;
 import com.viet.request.LoginRequest;
 import com.viet.request.SignupRequest;
 import com.viet.response.ApiResponse;
 import com.viet.response.AuthResponse;
-import com.viet.service.AuthService;
+import com.viet.service.Impl.AuthService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

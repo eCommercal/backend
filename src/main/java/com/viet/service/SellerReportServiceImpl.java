@@ -3,6 +3,7 @@ package com.viet.service;
 import com.viet.model.Seller;
 import com.viet.model.SellerReport;
 import com.viet.repository.SellerReportRepository;
+import com.viet.service.Impl.SellerReportService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

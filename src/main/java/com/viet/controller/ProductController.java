@@ -2,7 +2,7 @@ package com.viet.controller;
 
 import com.viet.exception.ProductException;
 import com.viet.model.Product;
-import com.viet.service.ProductService;
+import com.viet.service.Impl.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +22,7 @@ public class ProductController {
     ProductService productService;
 
 
-    @GetMapping("/productId")
+    @GetMapping("/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable Long productId) throws ProductException {
 
         Product product = productService.findProductById(productId);

@@ -1,10 +1,9 @@
 package com.viet.controller;
 
-import com.stripe.exception.StripeException;
 import com.viet.model.*;
 import com.viet.response.ApiResponse;
 import com.viet.response.PaymentResponse;
-import com.viet.service.*;
+import com.viet.service.Impl.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,16 +34,20 @@ public class PaymentController {
 
         PaymentOrder paymentOrder = paymentService.getPaymentOrderByPaymentId(paymentLinkId);
 
-        for(Order order : paymentOrder.getOrders()) {
-            transactionService.createTransaction(order);
-            Seller seller = sellerService.getSellerById(order.getSellerId());
+        boolean paymentSuccess = paymentService.proceedPayment(paymentOrder, paymentId, paymentLinkId);
 
-            SellerReport sellerReport = sellerReportService.getSellerReport(seller);
-            sellerReport.setTotalOrders(sellerReport.getTotalOrders() + 1);
-            sellerReport.setTotalEarnings(sellerReport.getTotalEarnings() + order.getTotalSellingPrice());
-            sellerReport.setTotalSales(sellerReport.getTotalSales() + order.getOrderItems().size());
+        if (paymentSuccess) {
+            for (Order order : paymentOrder.getOrders()) {
+                transactionService.createTransaction(order);
+                Seller seller = sellerService.getSellerById(order.getSellerId());
 
-            sellerReportService.updateSellerReport(sellerReport);
+                SellerReport sellerReport = sellerReportService.getSellerReport(seller);
+                sellerReport.setTotalOrders(sellerReport.getTotalOrders() + 1);
+                sellerReport.setTotalEarnings(sellerReport.getTotalEarnings() + order.getTotalSellingPrice());
+                sellerReport.setTotalSales(sellerReport.getTotalSales() + order.getOrderItems().size());
+
+                sellerReportService.updateSellerReport(sellerReport);
+            }
         }
 
         ApiResponse apiResponse = new ApiResponse();

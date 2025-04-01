@@ -8,10 +8,10 @@ import com.viet.model.Address;
 import com.viet.model.Seller;
 import com.viet.repository.AddressRepository;
 import com.viet.repository.SellerRepository;
+import com.viet.service.Impl.SellerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
